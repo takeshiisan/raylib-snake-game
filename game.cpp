@@ -5,8 +5,9 @@ int main()
 {
     const int screenWidth = 750;
     const int screenHeight = 750;
-    
-    Color background = { 173, 204, 96, 255 };
+
+    Color green = { 173, 204, 96, 255 };
+    Color darkgreen = { 43, 51, 24, 255 };
 
     int snakeX = screenWidth / 2;
     int snakeY = screenHeight / 2;
@@ -38,8 +39,8 @@ int main()
 
         BeginDrawing();
         //Snake
-        DrawRectangle(snakeX, snakeY, 10, 10, RED);
-        ClearBackground(background);
+        DrawRectangle(snakeX, snakeY, 10, 10, darkgreen);
+        ClearBackground(green);
         EndDrawing();
     }
     CloseWindow();
