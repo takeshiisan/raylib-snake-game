@@ -1,8 +1,6 @@
 #include <iostream>
 #include "raylib.h"
 
-int main()
-{
     const int screenWidth = 750;
     const int screenHeight = 750;
 
@@ -13,26 +11,31 @@ int main()
     int snakeY = screenHeight / 2;
 
     int snakeSpeed = 10;
+    
+    //GRID
+    int cellSize = 30;
+    int cellCount = 25;
+int main()
+{
 
-    InitWindow(screenWidth, screenHeight, "Game");
+    InitWindow(cellSize * cellCount, cellCount * cellSize, "Game");
     SetTargetFPS(60);
-
 
     while (WindowShouldClose() == false)
     {
-        if(IsKeyPressed(KEY_RIGHT))
+        if(IsKeyDown(KEY_RIGHT))
         {
             snakeX += snakeSpeed;
         }
-        if(IsKeyPressed(KEY_LEFT))
+        if(IsKeyDown(KEY_LEFT))
         {
             snakeX -= snakeSpeed;
         }
-        if(IsKeyPressed(KEY_DOWN))
+        if(IsKeyDown(KEY_DOWN))
         {
             snakeY += snakeSpeed;
         }
-        if(IsKeyPressed(KEY_UP))
+        if(IsKeyDown(KEY_UP))
         {
             snakeY -= snakeSpeed;
         }
