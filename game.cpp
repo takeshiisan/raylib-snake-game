@@ -1,5 +1,7 @@
 #include <iostream>
 #include "raylib.h"
+#include <raymath.h>
+#include <deque>
 
 const int screenWidth = 750;
 const int screenHeight = 750;
@@ -13,9 +15,46 @@ int snakeY = screenHeight / 2;
 int snakeSpeed = 10;
 
 //GRID
-int cellSize = 30;
-int cellCount = 25;
+float cellSize = 30;
+float cellCount = 25;
 
+double lastUpdateTime = 0;
+
+bool eventTriggered(double interval)
+{
+    double currentTime = GetTime();
+    if (currentTime - lastUpdateTime >= interval)
+    {
+        lastUpdateTime = currentTime;
+        return true;
+    }
+    return false;
+}
+
+class Snake
+{
+
+public:
+    std::deque<Vector2> body = {Vector2{6,9},Vector2{5,9},Vector2{4,9}};
+    Vector2 direction = {1, 0};
+
+    void Draw(){
+        for(unsigned int i = 0; i < body.size(); i++)
+        {
+            float x = body[i].x;
+            float y = body[i].y;
+            Rectangle segment = Rectangle{x * cellSize, y * cellSize, cellSize, cellSize};
+            DrawRectangleRounded(segment, 0.5, 5, darkgreen);
+        }
+    }
+
+    void Update()
+    {
+        body.pop_back();
+        body.push_front(Vector2Add(body[0], direction));
+    }
+
+};
 class Food{
     
     public: 
@@ -56,32 +95,41 @@ class Food{
 
     InitWindow(cellSize * cellCount, cellCount * cellSize, "Game");
     SetTargetFPS(60);
+    
 
     Food food = Food();
+    Snake snake = Snake();
 
     while (WindowShouldClose() == false)
     {
-        if(IsKeyDown(KEY_RIGHT))
+        
+        BeginDrawing();
+
+        if(eventTriggered(0.2))
         {
-            snakeX += snakeSpeed;
-        }
-        if(IsKeyDown(KEY_LEFT))
-        {
-            snakeX -= snakeSpeed;
-        }
-        if(IsKeyDown(KEY_DOWN))
-        {
-            snakeY += snakeSpeed;
-        }
-        if(IsKeyDown(KEY_UP))
-        {
-            snakeY -= snakeSpeed;
+            snake.Update();
         }
 
-        BeginDrawing();
-        //Snake
-        DrawRectangle(snakeX, snakeY, 10, 10, darkgreen);
+        if (IsKeyDown(KEY_UP))
+        {
+            snake.direction = Vector2{0, -1};
+        }
+        else if (IsKeyDown(KEY_DOWN))
+        {
+            snake.direction = Vector2{0, 1};
+        }
+        else if (IsKeyDown(KEY_LEFT))
+        {
+            snake.direction = Vector2{-1, 0};
+        }
+        else if (IsKeyDown(KEY_RIGHT))
+        {
+            snake.direction = Vector2{1, 0};
+        }
+        
+        //drawing
         food.Draw();
+        snake.Draw();
         ClearBackground(green);
         EndDrawing();
     }
