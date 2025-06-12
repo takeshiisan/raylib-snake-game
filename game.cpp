@@ -82,6 +82,8 @@ class Food{
             DrawTexture(texture, position.x * cellSize, position.y * cellSize, WHITE);
         }
 
+
+
         //Generate random position of the food that the snake will eat
         Vector2 GenerateRandomPos()
         {
@@ -90,15 +92,32 @@ class Food{
             return Vector2{x,y};
         }
 };
+    
+class Game {
+public:
+    Snake snake = Snake();
+    Food food = Food();
+
+    void Draw()
+    {
+        food.Draw();
+        snake.Draw();
+    }
+
+    void Update()
+    {
+        snake.Update();
+    }
+};
     int main()
 {
 
     InitWindow(cellSize * cellCount, cellCount * cellSize, "Game");
     SetTargetFPS(60);
-    
 
-    Food food = Food();
-    Snake snake = Snake();
+    Game game = Game();
+    // Snake snake = game.snake;
+    // Food food = game.food;
 
     while (WindowShouldClose() == false)
     {
@@ -107,29 +126,28 @@ class Food{
 
         if(eventTriggered(0.2))
         {
-            snake.Update();
+            game.Update();
         }
 
         if (IsKeyDown(KEY_UP))
         {
-            snake.direction = Vector2{0, -1};
+            game.snake.direction = Vector2{0, -1};
         }
         else if (IsKeyDown(KEY_DOWN))
         {
-            snake.direction = Vector2{0, 1};
+            game.snake.direction = Vector2{0, 1};
         }
         else if (IsKeyDown(KEY_LEFT))
         {
-            snake.direction = Vector2{-1, 0};
+            game.snake.direction = Vector2{-1, 0};
         }
         else if (IsKeyDown(KEY_RIGHT))
         {
-            snake.direction = Vector2{1, 0};
+            game.snake.direction = Vector2{1, 0};
         }
         
         //drawing
-        food.Draw();
-        snake.Draw();
+        game.Draw();
         ClearBackground(green);
         EndDrawing();
     }
