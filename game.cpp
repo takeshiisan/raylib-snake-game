@@ -26,8 +26,6 @@ class Food{
             DrawRectangle(position.x *cellSize, position.y * cellSize, cellSize, cellSize, darkgreen);
         }
 };
-
-
     int main()
 {
 
